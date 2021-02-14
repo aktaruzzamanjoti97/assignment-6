@@ -18,6 +18,7 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
+ 
   searchResult.innerText = '0';
   searchResult.innerText = images.length;
   imagesArea.style.display = 'block';
@@ -35,6 +36,7 @@ const showImages = (images) => {
 }
 
 const getImages = (query) => {
+  toggleSpinner(true);
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
@@ -57,6 +59,7 @@ const selectItem = (event, img) => {
 var timer
 const createSlider = () => {
   searchHideResult.innerText = ''
+
   // check slider image length
   if (sliders.length < 2) {
     alert('Select at least 2 image.')
@@ -75,8 +78,8 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const durationShow = document.getElementById('duration').value;
-  const duration =  durationShow >= 1000 || 1000;
+
+  const duration = Math.abs(document.getElementById('duration').value) || 1000;
 
   sliders.forEach(slide => {
     let item = document.createElement('div')
@@ -124,6 +127,8 @@ const changeSlide = (index) => {
 }
 
 searchBtn.addEventListener('click', function () {
+  searchInput.innerText = '';
+  searchHideResult.style.display = 'block';
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   
@@ -133,12 +138,25 @@ searchBtn.addEventListener('click', function () {
 })
 
 sliderBtn.addEventListener('click', function () {
+ 
   createSlider()
 })
 
 
 searchInput.addEventListener("keypress", function(event) {
     if (event.key == 'Enter'){
-      document.getElementById("search-btn").click()
+      document.getElementById("search-btn").click();
     }
 });
+
+
+//spinner function
+const toggleSpinner = (show) => {
+  const spinner = document.getElementById('loading-spinner');
+  if(show){
+    spinner.classList.remove('d-none');
+  }
+  else{
+    spinner.classList.add('d-none');
+  }
+}
