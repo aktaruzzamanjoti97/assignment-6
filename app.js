@@ -81,17 +81,10 @@ const createSlider = () => {
   })
   changeSlide(0)
   timer = setInterval(function () {
-    
-    if(duration <= 0){
-      // clearInterval();
-      // console.log(45);
-      // duration = 1000;
-      // document.getElementById('doration').value = 1000;
-    }
-    else{
+   
       slideIndex++;
       changeSlide(slideIndex);
-    }
+
 
   }, duration);
   
