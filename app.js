@@ -4,6 +4,9 @@ const galleryHeader = document.querySelector('.gallery-header');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
+const searchResult = document.getElementById('show-search-result');
+const searchInput = document.getElementById("search");
+const searchHideResult = document.getElementById('search-result-hide');
 // selected image 
 let sliders = [];
 
@@ -15,6 +18,8 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
+  searchResult.innerText = '0';
+  searchResult.innerText = images.length;
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -22,7 +27,8 @@ const showImages = (images) => {
   images.forEach(image => {
     let div = document.createElement('div');
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-    div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+    div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">
+    <h6 class="text-center"><span></span> ${image.tags}</h6>`;
     gallery.appendChild(div)
   })
 
@@ -50,6 +56,7 @@ const selectItem = (event, img) => {
 }
 var timer
 const createSlider = () => {
+  searchHideResult.innerText = ''
   // check slider image length
   if (sliders.length < 2) {
     alert('Select at least 2 image.')
@@ -97,7 +104,7 @@ const changeItem = index => {
 
 // change slide item
 const changeSlide = (index) => {
-
+  searchResult.style.display = 'none';
   const items = document.querySelectorAll('.slider-item');
   if (index < 0) {
     slideIndex = items.length - 1
@@ -119,7 +126,8 @@ const changeSlide = (index) => {
 searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
-  const search = document.getElementById('search');
+  
+  
   getImages(search.value)
   sliders.length = 0;
 })
@@ -129,7 +137,7 @@ sliderBtn.addEventListener('click', function () {
 })
 
 
-document.getElementById("search").addEventListener("keypress", function(event) {
+searchInput.addEventListener("keypress", function(event) {
     if (event.key == 'Enter'){
       document.getElementById("search-btn").click()
     }
